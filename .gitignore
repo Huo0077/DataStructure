@@ -1,0 +1,11 @@
+# Compiled output
+*.exe
+*.out
+*.o
+*.obj
+
+# IDE files
+.vs/
+.vscode/
+*.user
+*.suo
