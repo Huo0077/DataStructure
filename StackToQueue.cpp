@@ -31,13 +31,16 @@ class StackToQueue
         stackIn.push(val);
     }
 
-    // 出队：从 stackOut 弹出栈顶
-    T pop()
+    // 出队：从 stackOut 弹出栈顶，不返回值（需要值时先调用 peek()）
+    void pop()
     {
         Tranfer();
-        T val = stackOut.top();
+        if(stackOut.empty())
+        {
+            cout<<"queue is empty"<<endl;
+            return;
+        }
         stackOut.pop();
-        return val;
     }
 
     // 查看队头：即 stackOut 的栈顶

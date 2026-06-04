@@ -66,41 +66,59 @@ class Deque
         }
     }
 
-    // 队头删除：front 后移，释放原头节点
-    T pop_front()
+    // 查看队头元素
+    T front_val()
     {
         if(Isempty())
         {
             cout<<"deque is empty"<<endl;
             return T();
         }
+        return front->data;
+    }
+
+    // 查看队尾元素
+    T back_val()
+    {
+        if(Isempty())
+        {
+            cout<<"deque is empty"<<endl;
+            return T();
+        }
+        return rear->data;
+    }
+
+    // 队头删除：front 后移，释放原头节点
+    void pop_front()
+    {
+        if(Isempty())
+        {
+            cout<<"deque is empty"<<endl;
+            return;
+        }
         Node<T>* temp = front;
-        T data = temp->data;
         front = front->next;
         if(front == nullptr)
             rear = nullptr;       // 队列已空
         else
             front->prev = nullptr;
         delete temp;
-        return data;
     }
 
     // 队尾删除：rear 前移，释放原尾节点
-    T pop_back()
+    void pop_back()
     {
         if(Isempty())
         {
             cout<<"deque is empty"<<endl;
-            return T();
+            return;
         }
         Node<T>* temp = rear;
-        T data = temp->data;
         rear = rear->prev;
         if(rear == nullptr)
             front = nullptr;      // 队列已空
         else
             rear->next = nullptr;
         delete temp;
-        return data;
     }
 };

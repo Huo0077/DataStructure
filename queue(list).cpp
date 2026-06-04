@@ -47,20 +47,29 @@ public:
         }
     }
 
-    // 出队：从 front 删除，如果删空了要把 rear 也置空
-    T pop()
+    // 查看队头元素
+    T front_val()
     {
         if (Isempty())
         {
             cout << "queue is empty" << endl;
             return T();
         }
+        return front->data;
+    }
+
+    // 出队：从 front 删除，如果删空了要把 rear 也置空
+    void pop()
+    {
+        if (Isempty())
+        {
+            cout << "queue is empty" << endl;
+            return;
+        }
         Node<T>* temp = front;
-        T data = temp->data;
         front = front->next;
         if (front == nullptr)
             rear = nullptr;  // 队列已空，rear 也需置空
         delete temp;
-        return data;
     }
 };

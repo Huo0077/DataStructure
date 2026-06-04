@@ -46,19 +46,17 @@ public:
         top = newNode;
     }
 
-    // 出栈：从链表头部删除
-    T pop()
+    // 出栈：从链表头部删除，不返回值（需要值时先调用 peek()）
+    void pop()
     {
         if (Isempty())
         {
             cout << "error:stack is empty" << endl;
-            return T();
+            return;
         }
         Node<T>* tmp = top;
-        T val = top->data;
         top = top->next;
         delete tmp;
-        return val;
     }
 
     // 查看栈顶
@@ -88,7 +86,8 @@ bool Match(string str)
         {
             if(st.Isempty())        // 右括号多了
                 return false;
-            char topChar = st.pop();
+            char topChar = st.peek();
+            st.pop();
             if ((c == ')' && topChar != '(') ||
                 (c == ']' && topChar != '[') ||
                 (c == '}' && topChar != '{'))
@@ -106,8 +105,8 @@ int evalRPN(vector<string>& Input)
     {
         if(Input[i]=="+" || Input[i]=="-" || Input[i]=="*" || Input[i]=="/")
         {
-            int num2 = st.pop();   // 右操作数（后弹出）
-            int num1 = st.pop();   // 左操作数（先弹出）
+            int num2 = st.peek(); st.pop();   // 右操作数
+            int num1 = st.peek(); st.pop();   // 左操作数
             if(Input[i]=="+")
                 st.push(num1 + num2);
             else if(Input[i]=="-")
@@ -122,5 +121,6 @@ int evalRPN(vector<string>& Input)
             st.push(stoi(Input[i]));  // 数字转 int 后入栈
         }
     }
-    return st.pop();  // 栈中唯一元素就是结果
+    int result = st.peek(); st.pop();
+    return result;
 }

@@ -43,17 +43,15 @@ class ArrStack
         data[top_index] = val;
     }
 
-    // 出栈：取出栈顶元素后 top 下移
-    T pop()
+    // 出栈：直接下移 top，不返回值（需要值时先调用 top()）
+    void pop()
     {
         if(Isempty())
         {
             cout<<"error:stack is empty"<<endl;
-            return T();
+            return;
         }
-        T val = data[top_index];
         top_index--;
-        return val;
     }
 
     // 查看栈顶元素，不出栈

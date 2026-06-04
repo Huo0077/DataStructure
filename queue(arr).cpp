@@ -38,16 +38,25 @@ class Queue
         rear = (rear+1)%capacity;
     }
 
-    // 出队：取出 front 位置，front 循环后移
-    T pop()
+    // 查看队头元素
+    T front_val()
     {
         if(Isempty())
         {
             cout<<"queue is empty"<<endl;
             return T();
         }
-        T temp = arr[front];
+        return arr[front];
+    }
+
+    // 出队：直接后移 front，不返回值（需要值时先调用 front_val()）
+    void pop()
+    {
+        if(Isempty())
+        {
+            cout<<"queue is empty"<<endl;
+            return;
+        }
         front = (front+1)%capacity;
-        return temp;
     }
 };
