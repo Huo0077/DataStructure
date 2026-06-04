@@ -1,5 +1,8 @@
+// 双端队列：基于双向链表实现，模板类
+// 支持在队头和队尾进行插入和删除，共四种操作
 #include<iostream>
 using namespace std;
+
 template <typename T>
 class Node
 {
@@ -14,8 +17,8 @@ template <typename T>
 class Deque
 {
     private:
-    Node<T>* front;
-    Node<T>* rear;
+    Node<T>* front;  // 队头指针
+    Node<T>* rear;   // 队尾指针
     public:
     Deque():front(nullptr),rear(nullptr){}
     ~Deque()
@@ -29,6 +32,7 @@ class Deque
         return front == nullptr;
     }
 
+    // 队头插入：新节点挂在 front 前面，更新 front
     void push_front(T val)
     {
         Node<T>* newnode = new Node<T>(val);
@@ -45,6 +49,7 @@ class Deque
         }
     }
 
+    // 队尾插入：新节点挂在 rear 后面，更新 rear
     void push_back(T val)
     {
         Node<T>* newnode = new Node<T>(val);
@@ -61,6 +66,7 @@ class Deque
         }
     }
 
+    // 队头删除：front 后移，释放原头节点
     T pop_front()
     {
         if(Isempty())
@@ -72,17 +78,14 @@ class Deque
         T data = temp->data;
         front = front->next;
         if(front == nullptr)
-        {
-            rear = nullptr;
-        }
+            rear = nullptr;       // 队列已空
         else
-        {
             front->prev = nullptr;
-        }
         delete temp;
         return data;
     }
 
+    // 队尾删除：rear 前移，释放原尾节点
     T pop_back()
     {
         if(Isempty())
@@ -94,15 +97,10 @@ class Deque
         T data = temp->data;
         rear = rear->prev;
         if(rear == nullptr)
-        {
-            front = nullptr;
-        }
+            front = nullptr;      // 队列已空
         else
-        {
             rear->next = nullptr;
-        }
         delete temp;
         return data;
     }
-
 };

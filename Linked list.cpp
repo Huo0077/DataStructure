@@ -1,6 +1,9 @@
+// 双向链表：每个节点有 prev 和 next 两个指针
+// 支持：增删查、计数、升序/降序插入、尾插、遍历打印
 #include<iostream>
 using namespace std;
 
+// 链表节点
 class Node
 {
 public:
@@ -13,12 +16,13 @@ public:
 class Linkedlist
 {
 private:
-    Node* first;
+    Node* first;  // 头节点指针
 public:
-    Linkedlist(): first(nullptr) {}
-    Linkedlist(int n) { first = new Node(n); }
+    Linkedlist(): first(nullptr) {}         // 创建空链表
+    Linkedlist(int n) { first = new Node(n); }  // 创建一个含初始值的链表
     ~Linkedlist()
     {
+        // 遍历释放所有节点
         Node* current = first;
         while (current)
         {
@@ -27,7 +31,8 @@ public:
             delete tmp;
         }
     }
-     
+
+    // 返回链表节点个数
     int Count()
     {
         int result = 0;
@@ -40,6 +45,7 @@ public:
         return result;
     }
 
+    // 升序插入：找到第一个比 val 大的位置，插在它前面
     void AscendingInsert(int val)
     {
         Node* newNode = new Node(val);
@@ -57,6 +63,7 @@ public:
                     current = current->next;
                 else
                 {
+                    // 已到尾部，插入末尾
                     current->next = newNode;
                     newNode->prev = current;
                     return;
@@ -64,6 +71,7 @@ public:
             }
             else
             {
+                // 在 current 之前插入
                 Node* pre = current->prev;
                 newNode->next = current;
                 newNode->prev = pre;
@@ -71,13 +79,14 @@ public:
                 if (pre)
                     pre->next = newNode;
                 else
-                    first = newNode;
+                    first = newNode;  // 插入到头部
                 return;
             }
         }
     }
 
- void DescendingInsert(int val)
+    // 降序插入：找到第一个比 val 小的位置，插在它前面
+    void DescendingInsert(int val)
     {
         Node* newNode = new Node(val);
         if (!first)
@@ -114,6 +123,7 @@ public:
         }
     }
 
+    // 尾插：遍历到链表末尾插入
     void Insert(int val)
     {
         Node *newnode = new Node(val);
@@ -126,9 +136,7 @@ public:
         while(current)
         {
             if(current->next)
-            {
                 current = current->next;
-            }
             else
             {
                 current->next = newnode;
@@ -138,6 +146,7 @@ public:
         }
     }
 
+    // 按值删除：找到第一个匹配的节点并删除
     void Delete(int val)
     {
         if (!first)
@@ -150,10 +159,12 @@ public:
         {
             if (current->data == val)
             {
+                // 处理前驱指针
                 if (current->prev)
                     current->prev->next = current->next;
                 else
-                    first = current->next;
+                    first = current->next;  // 删除头节点，更新 first
+                // 处理后继指针
                 if (current->next)
                     current->next->prev = current->prev;
                 delete current;
@@ -164,6 +175,7 @@ public:
         cout << "value not found" << endl;
     }
 
+    // 查找：是否存在值为 val 的节点
     bool Search(int val)
     {
         Node* current = first;
@@ -176,6 +188,7 @@ public:
         return false;
     }
 
+    // 遍历打印所有节点
     void Display()
     {
         Node* current = first;

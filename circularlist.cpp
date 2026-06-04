@@ -1,5 +1,8 @@
+// 单向循环链表：尾节点的 next 指向头节点，形成环
+// 支持：尾插、打印、按值删除
 #include<iostream>
 using namespace std;
+
 class Node
 {
     public:
@@ -15,35 +18,35 @@ class Node
 class Circularlist
 {
     private:
-    Node* first;
+    Node* first;  // 头节点指针
     public:
     Circularlist(){first = nullptr;}
 
+    // 尾插：找到尾节点（next==first），在其后插入
     void insert(int val)
     {
         Node* newnode = new Node(val);
         if(!first)
         {
             first = newnode;
-            newnode->next = first;
+            newnode->next = first;  // 自己指向自己，形成环
             return;
         }
         Node* current = first;
         while(current)
         {
-            if(current->next == first)
+            if(current->next == first)  // 找到尾节点
             {
                 current->next = newnode;
                 newnode->next = first;
                 break;
             }
             else
-            {
                 current = current->next;
-            }
         }
     }
 
+    // 循环遍历打印，直到回到 first
     void Print()
     {
         if(!first)
@@ -61,6 +64,7 @@ class Circularlist
         cout<<endl;
     }
 
+    // 按值删除
     void Delete(int val)
     {
         if (!first)
@@ -75,21 +79,24 @@ class Circularlist
             {
                 if (current == first)
                 {
+                    // 只有一个节点
                     if (first->next == first)
                     {
                         delete first;
                         first = nullptr;
                         return;
                     }
+                    // 删除头节点：先找到尾节点，更新其 next，再更新 first
                     Node* last = first;
                     while (last->next != first)
-                    last = last->next;
+                        last = last->next;
                     first = first->next;
                     last->next = first;
                     delete current;
                 }
                 else
                 {
+                    // 删除非头节点：前驱跳过当前即可
                     prev->next = current->next;
                     delete current;
                 }
