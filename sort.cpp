@@ -2,6 +2,7 @@
 // 时间复杂度：O(n²)，稳定排序
 #include<iostream>
 #include<vector>
+#include<queue>//使用优先队列实现最小堆
 using namespace std;
 
 void insertion_sort(vector<int>& arr)
@@ -21,3 +22,4 @@ void insertion_sort(vector<int>& arr)
         arr[j+1]=key;         // 插入到正确位置
     }
 }
+

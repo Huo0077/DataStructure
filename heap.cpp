@@ -94,6 +94,35 @@ class MinHeap
         if(!Isempty())
         DOWN(0);
         return temp;
-
     }
 };
+
+// 用最小堆获取前 k 大的元素，结果降序排列
+// 1. 维护一个大小为 k 的最小堆，堆顶是"门槛"（前 k 大中最小的那个）
+// 2. 遍历数组：堆未满直接入；已满时若当前元素 > 门槛，踢掉门槛加入新元素
+// 3. 遍历完后堆中就是前 k 大的数，弹出再反转得降序
+// 时间复杂度: O(n log k)
+vector<int> topKLargest(vector<int>& arr, int k)
+{
+    MinHeap heap;
+    for (int i = 0; i < arr.size(); i++)
+    {
+        if (heap.size() < k)
+        {
+            heap.push(arr[i]);
+        }
+        else if (arr[i] > heap.top())
+        {
+            heap.pop();
+            heap.push(arr[i]);
+        }
+    }
+    // 依次弹出（升序），反转得到降序
+    vector<int> result;
+    while (!heap.Isempty())
+    {
+        result.push_back(heap.pop());
+    }
+    reverse(result.begin(), result.end());
+    return result;
+}
