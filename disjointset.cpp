@@ -102,26 +102,65 @@ public:
     // ----------------------------------------------------------
     void unionSets(int x, int y)
     {
-        int root1 = find(x);  // 找 x 的根（同时路径压缩）
-        int root2 = find(y);  // 找 y 的根（同时路径压缩）
+        int root1 = find(x);
+        int root2 = find(y);
 
-        if (root1 == root2)
-        {
-            return;  // 已经在同一集合中
-        }
+        if (root1 == root2) return;
 
-        // 按大小合并：绝对值大的（集合大）当新根
         if (parent[root1] < parent[root2])
         {
-            // root1 的集合更大，root2 挂到 root1 下
-            parent[root1] += parent[root2];  // 更新 root1 的集合大小（负数相加）
-            parent[root2] = root1;           // root2 不再为根，指向 root1
+            parent[root1] += parent[root2];
+            parent[root2] = root1;
         }
         else
         {
-            // root2 的集合 >= root1，root1 挂到 root2 下
             parent[root2] += parent[root1];
             parent[root1] = root2;
         }
     }
+
+    // 获取元素 x 所在集合的大小
+    int setSize(int x)
+    {
+        return -parent[find(x)];
+    }
 };
+
+// ============================================================
+//                         测 试 主 函 数
+// ============================================================
+
+int main()
+{
+    cout << "╔══════════════════════════════════╗" << endl;
+    cout << "║    并 查 集 测 试                ║" << endl;
+    cout << "╚══════════════════════════════════╝" << endl;
+
+    disjointset ds(10);
+
+    // 初始状态：每个节点独立
+    cout << "\n┌─ 初始状态 ─────────────────────┐" << endl;
+    cout << "find(0)=" << ds.find(0) << ", find(5)=" << ds.find(5) << " (各自独立)" << endl;
+    cout << "find(0)==find(5) → " << (ds.find(0) == ds.find(5)) << " (expect 0)" << endl;
+
+    // 合并操作
+    cout << "\n┌─ 合并操作 ─────────────────────┐" << endl;
+    ds.unionSets(0, 1);
+    ds.unionSets(0, 2);
+    ds.unionSets(3, 4);
+    ds.unionSets(0, 3);  // 两个集合合并
+    cout << "合并 0-1-2-3-4 后: find(0)==find(4) → " << (ds.find(0) == ds.find(4)) << " (expect 1)" << endl;
+    cout << "find(0)==find(5) → " << (ds.find(0) == ds.find(5)) << " (expect 0)" << endl;
+    cout << "集合0的大小=" << ds.setSize(0) << " (expect 5)" << endl;
+
+    // 路径压缩效果
+    cout << "\n┌─ 路径压缩 ─────────────────────┐" << endl;
+    ds.unionSets(5, 6);
+    ds.unionSets(6, 7);
+    ds.unionSets(5, 0);  // 大合并
+    cout << "全合并后: find(1)==find(7) → " << (ds.find(1) == ds.find(7)) << " (expect 1)" << endl;
+    cout << "总元素数: setSize(0)=" << ds.setSize(0) << " (expect 8)" << endl;
+
+    cout << "\n所有测试完成！" << endl;
+    return 0;
+}

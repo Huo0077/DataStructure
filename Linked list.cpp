@@ -259,3 +259,50 @@ public:
         cout << endl;
     }
 };
+
+// ============================================================
+//                         测 试 主 函 数
+// ============================================================
+
+int main()
+{
+    cout << "╔══════════════════════════════════╗" << endl;
+    cout << "║   双 向 链 表 测 试              ║" << endl;
+    cout << "╚══════════════════════════════════╝" << endl;
+
+    Linkedlist ll;
+
+    // 升序插入
+    cout << "\n┌─ 升序插入 5,2,8,1,3 ──────────┐" << endl;
+    ll.AscendingInsert(5);
+    ll.AscendingInsert(2);
+    ll.AscendingInsert(8);
+    ll.AscendingInsert(1);
+    ll.AscendingInsert(3);
+    ll.Display();  // expect: 1 2 3 5 8
+    cout << "节点数=" << ll.Count() << " (expect 5)" << endl;
+
+    // 查找
+    cout << "\n┌─ 查找测试 ────────────────────┐" << endl;
+    cout << "Search(3)=" << ll.Search(3) << " (expect 1)" << endl;
+    cout << "Search(9)=" << ll.Search(9) << " (expect 0)" << endl;
+
+    // 删除
+    cout << "\n┌─ 删除测试 ────────────────────┐" << endl;
+    ll.Delete(1);  // 删头
+    cout << "删除1后: "; ll.Display();
+    ll.Delete(8);  // 删尾
+    cout << "删除8后: "; ll.Display();
+    ll.Delete(3);  // 删中间
+    cout << "删除3后: "; ll.Display();
+    cout << "节点数=" << ll.Count() << " (expect 2)" << endl;
+
+    // 降序插入
+    cout << "\n┌─ 降序插入 10,6 ───────────────┐" << endl;
+    ll.DescendingInsert(10);
+    ll.DescendingInsert(6);
+    ll.Display();  // expect: 10 6 5 2
+
+    cout << "\n所有测试完成！" << endl;
+    return 0;
+}
