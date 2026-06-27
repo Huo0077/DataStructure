@@ -59,6 +59,25 @@ private:
     int leftChild(int i)   { return 2 * i + 1; }
     int rightChild(int i)  { return 2 * i + 2; }
 
+    // ----------------------------------------------------------
+    // UP(index)：上浮操作 —— 把新插入的元素浮到正确位置
+    //
+    // 目的：恢复堆序性质。当新元素被 push 到末尾后，可能与父节点违反堆序，
+    //       需要不断上浮（与父节点比较并交换），直到满足堆序或到根。
+    //
+    // 操作思路：
+    //   while 当前节点不是根 且 当前值 < 父节点值：
+    //     交换当前节点与父节点
+    //     继续从父节点的位置向上检查
+    //
+    // 每次 push 后执行一次 UP，时间复杂度 O(log n)（树高）。
+    //
+    // 示例 push(2) 到已有堆 [1, 3, 5, 8, 7]：
+    //   2 放入末尾 → [1, 3, 5, 8, 7, 2]
+    //   2 < 父节点 5 → 交换 → [1, 3, 2, 8, 7, 5]
+    //   2 < 父节点 3 → 交换 → [1, 2, 3, 8, 7, 5]
+    //   2 > 父节点 1 → 停止 ✓
+    // ----------------------------------------------------------
     void UP(int index)
     {
         while (index > 0 && heap[index] < heap[parent(index)])
@@ -68,6 +87,29 @@ private:
         }
     }
 
+    // ----------------------------------------------------------
+    // DOWN(index)：下沉操作 —— 把堆顶的"错误"元素沉到正确位置
+    //
+    // 目的：pop 后堆顶被末尾元素替换，该元素可能比子节点大，违反堆序。
+    //       需要不断下沉（与较小子节点比较并交换），直到满足堆序或到叶节点。
+    //
+    // 操作思路：
+    //   while 当前节点有左子节点：
+    //     smaller = 左子
+    //     如果右子存在且右子更小 → smaller = 右子
+    //     如果当前值 ≤ smaller → 堆序满足，停止
+    //     否则交换当前节点与 smaller，继续向下
+    //
+    // 为什么选"较小子节点"交换？
+    //   换上去的值必须 ≤ 两个子节点。选较小的那个换上来，
+    //   保证换上去的值 ≤ 另一个没动的子节点。
+    //
+    // 每次 pop 后执行一次 DOWN，时间复杂度 O(log n)。
+    //
+    // 示例 pop() 用 7 替换堆顶 [1, 3, 5, 8, 7] → [7, 3, 5, 8]：
+    //   7 > 左子 3（较小）→ 交换 → [3, 7, 5, 8]
+    //   7 > 左子 8？没右子 → 停止 ✓
+    // ----------------------------------------------------------
     void DOWN(int index)
     {
         while (leftChild(index) < size())
@@ -75,15 +117,16 @@ private:
             int smaller = leftChild(index);
             int r = rightChild(index);
             if (r < size() && heap[r] < heap[smaller])
-                smaller = r;
+                smaller = r;                              // 选两子中较小的
             if (heap[index] <= heap[smaller])
-                break;
+                break;                                    // 堆序已满足
             swap(heap[index], heap[smaller]);
             index = smaller;
         }
     }
 
 public:
+    // 获取堆顶（最小值），O(1)
     int top()
     {
         if (heap.empty()) { cout << "heap is empty" << endl; return 0; }
@@ -92,12 +135,15 @@ public:
     bool Isempty() { return heap.empty(); }
     int size()     { return heap.size(); }
 
+    // push：入堆。放到末尾，然后上浮到正确位置。
     void push(int val)
     {
         heap.push_back(val);
         UP(heap.size() - 1);
     }
 
+    // pop：弹出堆顶（最小值）。
+    // 用末尾元素覆盖堆顶，弹出末尾，然后下沉恢复堆序。
     int pop()
     {
         if (Isempty()) { cout << "heap is empty" << endl; return 0; }
@@ -109,7 +155,34 @@ public:
     }
 };
 
-// Top-K 最大：返回 arr 中前 k 大的数，降序排列
+// ----------------------------------------------------------
+// topKLargest(arr, k)：返回 arr 中前 k 大的元素，降序排列
+//
+// 目的：从海量数据中找出最大的 k 个元素，O(n log k)，
+//      远优于全排序的 O(n log n)，特别适合 k << n 的场景。
+//
+// 操作思路（最小堆做"门槛过滤器"）：
+//   维护一个大小为 k 的最小堆，堆中始终保存"当前已看到的 Top K"。
+//   对于每个输入元素：
+//     - 堆未满（size < k）→ 直接入堆
+//     - 堆已满，当前元素 > 堆顶（堆顶 = 当前 Top-K 中最小的那个）
+//       → 踢掉最小的（pop），新元素入堆（push）
+//     - 当前元素 ≤ 堆顶 → 不是 Top-K，跳过
+//
+//   最后堆中就是前 k 大的元素（无序），弹出并反转得到降序。
+//
+// 为什么用最小堆存"最大"的元素？
+//   最小堆的堆顶是堆中最小元素，恰好是 Top-K 的"入门门槛"。
+//   比门槛小的元素不可能进入 Top-K，直接跳过。
+//   如果选最大堆，堆顶是最大元素，无法判断何时淘汰旧元素。
+//
+// 示例 arr=[3,1,5,7,2,8], k=3:
+//   3→[3], 1→[1,3], 5→[1,3,5](满)
+//   7>1→pop 1, push 7→[3,5,7]
+//   2<3→跳过
+//   8>3→pop 3, push 8→[5,7,8]
+//   输出反转 → [8,7,5]
+// ----------------------------------------------------------
 vector<int> topKLargest(vector<int>& arr, int k)
 {
     MinHeap heap;
@@ -126,7 +199,7 @@ vector<int> topKLargest(vector<int>& arr, int k)
     vector<int> result;
     while (!heap.Isempty())
         result.push_back(heap.pop());
-    reverse(result.begin(), result.end());
+    reverse(result.begin(), result.end());  // 堆是小→大，反转得到大→小
     return result;
 }
 
@@ -182,23 +255,32 @@ private:
         delete node;
     }
 
-    // 合并两棵左式堆，返回合并后的根
+    // ----------------------------------------------------------
+    // merge(n1, n2)：合并两棵左式堆，返回合并后的根
     //
-    // 【算法步骤】（自顶向下 + 自底向上）
-    //   1. 空堆处理
+    // 目的：将两个堆的所有元素合并成一个新堆。左式堆的核心操作。
+    //       insert 和 deleteMin 都可以用 merge 实现。
+    //
+    // 自顶向下 + 自底向上的递归：
+    //   1. 空堆处理（一边为空直接返回另一边）
     //   2. 确保 n1 的根 ≤ n2 的根（否则交换），n1 成为新根
-    //   3. 递归合并 n1->Right 和 n2（沿右路径向下）
-    //   4. 回溯时检查左倾性质：若 npl(left) < npl(right)，交换左右
-    //   5. 更新当前节点 npl = npl(right) + 1
+    //   3. 递归合并 n1->right 和 n2（沿右路径向下）
+    //   4. 回溯时检查左倾性质：如果 npl(left) < npl(right)，交换左右子树
+    //   5. 更新 npl = npl(right) + 1
     //
-    // 【为什么总是沿右子树递归？】
+    // 为什么总是沿右子树递归？
     //   左倾性质保证右路径是"最短路径"，合并沿最短路径进行 → O(log n)
     //
-    // 【示例】合并 [3] 和 [4]
-    //   n1=3, n2=4: 3≤4, n1为根
-    //   merge(n1->right=null, n2=4) → 返回4作为n1的右子
-    //   回溯: n1左=null(npl=-1), 右=4(npl=0), -1<0 → 交换左右
-    //   结果: 3的左=4, 3的右=null, npl(3)=0 ✓
+    // 为什么回溯时需要交换左右？
+    //   递归让右子树不断变深。如果不交换，可能违反左倾性质
+    //   （左边的 npl 反而比右边小）。交换可以恢复。
+    //
+    // 具体示例合并 [3] 和 [4]：
+    //   n1=3, n2=4: 3≤4, n1 为根
+    //   merge(n1->right=null, n2=4) → 返回 4 作为 n1 的右子
+    //   回溯：n1 左=null(npl=-1), 右=4(npl=0), -1<0 → 交换左右
+    //   结果：3 的左=4, 3 的右=null, npl(3)=0 ✓
+    // ----------------------------------------------------------
     LeftNode* merge(LeftNode* n1, LeftNode* n2)
     {
         // 空堆处理
@@ -228,28 +310,33 @@ public:
 
     bool Isempty() { return root == nullptr; }
 
+    // 获取堆顶（最小值），O(1)
     int top()
     {
         if (!root) { cout << "heap is empty" << endl; return 0; }
         return root->data;
     }
 
+    // push(val)：插入新元素。创建单节点堆，与现有堆合并。
     void push(int val)
     {
         root = merge(root, new LeftNode(val));
     }
 
+    // pop()：删除并返回堆顶（最小值）。
+    // 删除根节点，将左右子树合并为新堆。
     int pop()
     {
         if (!root) { cout << "heap is empty" << endl; return 0; }
         int Min = root->data;
         LeftNode* old = root;
-        root = merge(old->left, old->right);
+        root = merge(old->left, old->right);  // 合并左右子树
         delete old;
         return Min;
     }
 
-    // 合并另一个左式堆（破坏性：other 被清空）
+    // mergeWith(other)：将另一个左式堆全部合并到当前堆
+    // 注意：这是破坏性操作，other 的 root 被置空（防止 double free）
     void mergeWith(LeftistHeap& other)
     {
         root = merge(root, other.root);

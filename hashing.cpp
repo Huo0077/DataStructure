@@ -44,6 +44,7 @@ private:
 public:
     HashTable(int size = 10) : currentSize(0) { table.resize(size); }
 
+    // insert：用哈希定位桶，遍历链表检查重复，无重复则加入。
     void insert(int val)
     {
         int step = myHash(val);
@@ -53,6 +54,7 @@ public:
         currentSize++;
     }
 
+    // search：定位桶后遍历链表查找。平均 O(1+λ) ≈ O(1)。
     bool search(int val)
     {
         int step = myHash(val);
@@ -61,10 +63,12 @@ public:
         return false;
     }
 
+    // remove：定位桶后用 list::remove 删除。分离链接删除最简单——
+    // 直接改链表指针即可，不需要懒标记。
     void remove(int val)
     {
         int step = myHash(val);
-        table[step].remove(val);        // std::list::remove
+        table[step].remove(val);
         currentSize--;
     }
 

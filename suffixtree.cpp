@@ -664,15 +664,20 @@ public:
         setSuffixLinks(rootID);
     }
 
-    // 递归建立后缀链接
+    // ----------------------------------------------------------
+    // setSuffixLinks(nodeID)：递归遍历所有节点
+    //
+    // 目的：Ukkonen 算法在构建过程中已经为大多数内部节点建立了后缀链接，
+    //      此 DFS 负责确保 100% 的节点都有链接（处理边界情况）。
+    // 实际上后缀链接在 extendSuffixTree 的步骤6中已建立，
+    // 这里的递归遍历是安全保障。
+    // ----------------------------------------------------------
     void setSuffixLinks(int nodeID)
     {
         for (auto& p : nodes[nodeID]->children)
         {
             setSuffixLinks(p.second->id);
         }
-        // Ukkonen 算法中大部分后缀链接已在构建时建立，
-        // 此处的调用确保所有内部节点都有后缀链接
     }
 
     // ==================== 模式匹配 ====================
@@ -757,21 +762,26 @@ public:
         return result;
     }
 
-    // 收集子树中所有叶节点对应的后缀起始位置
+    // ----------------------------------------------------------
+    // collectLeafPositions(nodeID, pathLen, result)：
+    //   收集子树中所有叶节点对应的后缀起始位置
+    //
+    // 目的：模式匹配成功后，需要找出模式串在文本中的所有出现位置。
+    //       匹配停在某个节点 → 该节点子树中所有叶节点的起始位置
+    //       就是所有匹配位置。
+    //
+    // pathLen：从根到 nodeID 父节点的路径长度累积值。
+    // 叶节点的后缀起始位置 = originalLen - 从根到叶的总路径长度。
+    //
+    // 示例：text="banana$"，匹配 "ana"，停在路径代表 "ana" 的节点。
+    //       其子树中的叶节点起始位置 = 1（"anana$"）和 3（"ana$"）。
+    // ----------------------------------------------------------
     void collectLeafPositions(int nodeID, int pathLen, vector<int>& result) const
     {
         SuffixTreeNode* node = nodes[nodeID];
         if (node->children.empty())
         {
-            // 叶节点：后缀起始位置 = 边起始位置 = nodeID 入边的 start
-            // 实际位置 = textLen - suffixLen = textLen - 从根到叶的路径长度
-            // 简化：用原始 text 长度推算
             int originalLen = (int)text.length() - 1;  // 去掉 $
-            int suffixLen = 0;
-
-            // 从根走到这个叶节点，累加路径长度
-            // 由于我们已经在 pathLen 中积累了到 pattern 结尾的长度，
-            // 还需要从当前节点到叶节点的路径
             collectLeafPositionsHelper(nodeID, pathLen, originalLen, result);
             return;
         }
@@ -782,6 +792,15 @@ public:
         }
     }
 
+    // ----------------------------------------------------------
+    // collectLeafPositionsHelper(nodeID, pathLen, originalLen, result)：
+    //   从 nodeID 向下，递归收集所有叶节点的后缀起始位置
+    //
+    // 操作思路：
+    //   沿边向下累积 pathLen，到达叶节点时计算：
+    //     startPos = originalLen - pathLen
+    //   公式含义：文本总长度 - 该后缀的总长 = 后缀在原文中的起始位置。
+    // ----------------------------------------------------------
     void collectLeafPositionsHelper(int nodeID, int pathLen, int originalLen,
                                     vector<int>& result) const
     {
@@ -870,7 +889,18 @@ public:
         return best;
     }
 
-    // 获取从根到节点的路径长度
+    // ----------------------------------------------------------
+    // getPathLabelLen(nodeID)：获取从根到 nodeID 的路径标签总长度
+    //
+    // 目的：在 LCS 等应用中，需要知道某条边/路径代表多长的字符串。
+    //       例如判断一个叶节点属于 s1 还是 s2。
+    //
+    // 操作思路：从 nodeID 不断向父节点回退，累加每条边的长度（edgeLength），
+    //          直到回到根节点。
+    //
+    // 注意：由于节点不存储父指针，此处用暴力扫描所有节点的 children 来
+    //       找父节点。这是教学实现的简化，工程中应在节点中存 parent 指针。
+    // ----------------------------------------------------------
     int getPathLabelLen(int nodeID) const
     {
         int len = 0;
@@ -880,7 +910,7 @@ public:
             SuffixTreeNode* node = nodes[curr];
             len += node->edgeLength();
 
-            // 找父节点
+            // 暴力扫描找父节点（谁的孩子列表中包含 curr）
             for (const SuffixTreeNode* other : nodes)
             {
                 for (auto& p : other->children)
@@ -898,19 +928,32 @@ public:
         return len;
     }
 
-    // 检查节点的子树中是否包含来自两个字符串的叶节点
+    // ----------------------------------------------------------
+    // checkMixedLeaves(nodeID, n1, hasS1, hasS2)：
+    //   检查以 nodeID 为根的子树中的叶节点属于哪个字符串
+    //
+    // 目的：在 LCS（最长公共子串）问题中，拼接 "s1#s2$" 后构建后缀树。
+    //       一个节点同时包含 s1 和 s2 的叶节点 = 该节点路径代表的子串
+    //       在 s1 和 s2 中都出现 = 是一个公共子串。
+    //
+    // n1：s1 的长度（用于判断叶节点归属——叶节点起始位置 ≤ n1 则在 s1 中）
+    // hasS1, hasS2：输出参数，标记子树中是否同时包含两边的叶节点。
+    //
+    // 示例：text="ab#cd$", n1=2
+    //   叶节点起始位置 0,1 → 属于 s1("ab")
+    //   叶节点起始位置 3,4,5 → 属于 s2("cd")
+    //   起始位置 2 → 这是 "#" 的位置，不属于任何字符串
+    // ----------------------------------------------------------
     void checkMixedLeaves(int nodeID, int n1, bool& hasS1, bool& hasS2) const
     {
         SuffixTreeNode* node = nodes[nodeID];
         if (node->children.empty())
         {
-            // 叶节点：检查后缀起始在 s1 还是 s2
-            // 后缀起始位置 = 原串长度 - 从根到叶的路径长度
             int pathLen = getPathLabelLen(nodeID);
             int originalLen = (int)text.length() - 1;  // 去掉 $
             int startPos = originalLen - pathLen;
 
-            if (startPos <= n1)      // 起始位置在 s1 或 #
+            if (startPos <= n1)      // 起始位置在 s1 或 # 之后
             {
                 if (startPos < n1) hasS1 = true;  // 严格在 s1 内
             }

@@ -1971,6 +1971,98 @@ void externalSortDemo(const vector<int>& data, int memSize,
 }
 
 // ============================================================
+//   专题：逆序对（Inversion Count）
+// ============================================================
+//
+// 【定义】
+//   在一个序列 a[0..n-1] 中，如果 i < j 且 a[i] > a[j]，
+//   则 (a[i], a[j]) 构成一个逆序对。
+//
+//   逆序对数量反映数组的"无序程度"：
+//     - 完全升序：逆序对 = 0
+//     - 完全降序：逆序对 = n(n-1)/2（最大）
+//     - 插入排序的每次交换消除恰好一个逆序对 → 交换次数 = 逆序对数
+//
+// 【示例】arr = [2, 4, 1, 3]
+//   逆序对：(2,1), (4,1), (4,3), (2,1)...
+//   详细：2>1(✓), 4>1(✓), 4>3(✓), 2>3(✗), 1>3(✗)
+//   答案 = 3 对：{ (2,1), (4,1), (4,3) }
+//
+// ============================================================
+
+// ---------- 方法 1：归并排序计数 O(n log n) ----------
+// 核心思路：归并时，如果左半部分的 a[i] > 右半部分的 a[j]，
+// 那么左半部分从 i 到 mid 的所有元素都 > a[j]（因为左右各自已排序）。
+// 所以逆序对增加 (mid - i + 1)。
+//
+// 示例：归并 L=[2,5,8] 和 R=[1,3,6]：
+//   L[0]=2 > R[0]=1 → +3 (2,1)(5,1)(8,1)
+//   L[0]=2 < R[1]=3 → 正常归并
+//   L[1]=5 > R[1]=3 → +2 (5,3)(8,3)
+//   继续...
+
+long long mergeAndCount(vector<int>& arr, vector<int>& tmp, int left, int mid, int right)
+{
+    int i = left;       // 左半起始
+    int j = mid + 1;    // 右半起始
+    int k = left;       // 临时数组下标
+    long long invCount = 0;
+
+    while (i <= mid && j <= right)
+    {
+        if (arr[i] <= arr[j])
+        {
+            tmp[k++] = arr[i++];
+        }
+        else
+        {
+            // arr[i] > arr[j] → 左半从 i 到 mid 的所有元素都 > arr[j]
+            tmp[k++] = arr[j++];
+            invCount += (mid - i + 1);
+        }
+    }
+
+    // 剩余元素直接复制
+    while (i <= mid) tmp[k++] = arr[i++];
+    while (j <= right) tmp[k++] = arr[j++];
+
+    for (i = left; i <= right; i++)
+        arr[i] = tmp[i];
+
+    return invCount;
+}
+
+long long mergeSortAndCount(vector<int>& arr, vector<int>& tmp, int left, int right)
+{
+    long long invCount = 0;
+    if (left < right)
+    {
+        int mid = left + (right - left) / 2;
+        invCount += mergeSortAndCount(arr, tmp, left, mid);
+        invCount += mergeSortAndCount(arr, tmp, mid + 1, right);
+        invCount += mergeAndCount(arr, tmp, left, mid, right);
+    }
+    return invCount;
+}
+
+long long countInversions(vector<int> arr)
+{
+    vector<int> tmp(arr.size());
+    return mergeSortAndCount(arr, tmp, 0, arr.size() - 1);
+}
+
+// ---------- 方法 2：暴力法 O(n²)（仅用于小数组验证）----------
+long long countInversionsBrute(vector<int>& arr)
+{
+    long long count = 0;
+    for (size_t i = 0; i < arr.size(); i++)
+        for (size_t j = i + 1; j < arr.size(); j++)
+            if (arr[i] > arr[j])
+                count++;
+    return count;
+}
+
+// ============================================================
 //                         测 试 主 函 数
 // ============================================================
 
@@ -2035,6 +2127,21 @@ int main()
     cout << "结果: ";
     for (int v : arr7) cout << v << " ";
     cout << "(expect 0 1 2 2 3 3 4 5 8)" << endl;
+
+    // ---- 逆序对计数 ----
+    cout << "\n┌─ 逆序对计数 ───────────────────┐" << endl;
+    {
+        vector<int> invArr = {2, 4, 1, 3};
+        cout << "数组: 2 4 1 3" << endl;
+        cout << "逆序对(归并法)=" << countInversions(invArr) << " (expect 3)" << endl;
+        cout << "逆序对(暴力法)=" << countInversionsBrute(invArr) << " (expect 3)" << endl;
+
+        vector<int> asc = {1, 2, 3, 4, 5};
+        cout << "升序数组逆序对=" << countInversions(asc) << " (expect 0)" << endl;
+
+        vector<int> desc = {5, 4, 3, 2, 1};
+        cout << "降序数组逆序对=" << countInversions(desc) << " (expect 10)" << endl;
+    }
 
     cout << "\n所有测试完成！" << endl;
     return 0;

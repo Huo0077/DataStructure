@@ -1,5 +1,183 @@
 // ============================================================
-//              双向链表（Doubly Linked List）
+//        链表合集：单向链表 + 双向链表
+// ============================================================
+//
+// 本文件涵盖：
+//   Part 1: 单向链表（Singly Linked List）—— 最简单的链表
+//   Part 2: 双向链表（Doubly Linked List）—— 带前驱指针
+//
+// ============================================================
+
+#include<iostream>
+using namespace std;
+
+// ============================================================
+//   Part 1: 单向链表（Singly Linked List）
+// ============================================================
+//
+// 【核心概念】
+//   链表是最基础的非连续存储结构。每个节点只存数据 + 指向下一个的指针。
+//   单向链表只能向后走，不能往回走。
+//
+//   head → [data|next] → [data|next] → [data|next] → nullptr
+//
+// 【节点定义】
+//   data — 存储的数据（此处为 int）
+//   next — 指向下一个节点的指针，尾节点 next = nullptr
+//
+// 【关键操作的时间复杂度】
+//   头插  O(1) — 改一下 new node 的 next 指向，再更新 head
+//   尾插  O(n) — 需要先遍历到尾部
+//   删除  O(n) — 需要知道前驱节点（单向链表没有 prev 指针）
+//   查找  O(n) — 需要从头遍历
+//
+// 【单向 vs 双向】
+//   单向链表省空间（少一个指针），但删除时必须维护 prev 指针来找到前驱。
+//   双向链表多一个 prev 指针，但删除和反向遍历更方便。
+//
+// 【为什么需要链表？】
+//   数组：插入/删除中间元素需要搬移后续所有元素 → O(n)
+//   链表：插入/删除只需改指针 → O(1)（如果已知位置）
+//
+//   本质区别：数组是连续存储（随机访问快），链表是离散存储（插入删除快）。
+//
+// ============================================================
+
+class SinglyNode
+{
+public:
+    int data;
+    SinglyNode* next;
+    SinglyNode(int d) : data(d), next(nullptr) {}
+};
+
+class SinglyLinkedList
+{
+private:
+    SinglyNode* head;
+
+public:
+    SinglyLinkedList() : head(nullptr) {}
+    SinglyLinkedList(int n) { head = new SinglyNode(n); }
+
+    ~SinglyLinkedList()
+    {
+        while (head)
+        {
+            SinglyNode* tmp = head;
+            head = head->next;
+            delete tmp;
+        }
+    }
+
+    // 头插法 O(1)：新节点放到链表最前面
+    // 逆序插入 → 输出与插入顺序相反
+    // 例：依次头插 1,2,3 → 输出 3 2 1
+    void insertHead(int val)
+    {
+        SinglyNode* node = new SinglyNode(val);
+        node->next = head;
+        head = node;
+    }
+
+    // 尾插法 O(n)：新节点放到链表末尾
+    // 顺序插入 → 输出与插入顺序一致
+    void insertTail(int val)
+    {
+        SinglyNode* node = new SinglyNode(val);
+        if (!head)
+        {
+            head = node;
+            return;
+        }
+        SinglyNode* cur = head;
+        while (cur->next)
+            cur = cur->next;
+        cur->next = node;
+    }
+
+    // 按值删除 O(n)：删除第一个值为 val 的节点
+    // 关键：维护 prev 指针以修复链表
+    void remove(int val)
+    {
+        if (!head) { cout << "list is empty" << endl; return; }
+
+        // 删除的是头节点 → 直接推进 head
+        if (head->data == val)
+        {
+            SinglyNode* tmp = head;
+            head = head->next;
+            delete tmp;
+            return;
+        }
+
+        // 找前驱节点
+        SinglyNode* cur = head;
+        while (cur->next)
+        {
+            if (cur->next->data == val)
+            {
+                SinglyNode* tmp = cur->next;
+                cur->next = cur->next->next;  // 跳过被删节点
+                delete tmp;
+                return;
+            }
+            cur = cur->next;
+        }
+        cout << "value not found" << endl;
+    }
+
+    // 查找 O(n)
+    bool search(int val)
+    {
+        SinglyNode* cur = head;
+        while (cur)
+        {
+            if (cur->data == val) return true;
+            cur = cur->next;
+        }
+        return false;
+    }
+
+    // 统计节点数
+    int count()
+    {
+        int n = 0;
+        SinglyNode* cur = head;
+        while (cur) { n++; cur = cur->next; }
+        return n;
+    }
+
+    // 反转链表（迭代法）
+    // 三个指针：prev/curr/next，遍历时逐个逆转 next 方向
+    // 例：1→2→3  →  3→2→1
+    void reverse()
+    {
+        SinglyNode *prev = nullptr, *curr = head, *next = nullptr;
+        while (curr)
+        {
+            next = curr->next;   // 暂存后继
+            curr->next = prev;   // 反转指向
+            prev = curr;         // prev 前进
+            curr = next;         // curr 前进
+        }
+        head = prev;  // 原尾节点变新头
+    }
+
+    void display()
+    {
+        SinglyNode* cur = head;
+        while (cur)
+        {
+            cout << cur->data << " ";
+            cur = cur->next;
+        }
+        cout << endl;
+    }
+};
+
+// ============================================================
+//   Part 2: 双向链表（Doubly Linked List）
 // ============================================================
 //
 // 【核心概念】
@@ -30,9 +208,6 @@
 //   在找到插入位置后可以方便地在当前节点之前插入。
 //
 // ============================================================
-
-#include<iostream>
-using namespace std;
 
 class Node
 {
@@ -267,41 +442,66 @@ public:
 int main()
 {
     cout << "╔══════════════════════════════════╗" << endl;
-    cout << "║   双 向 链 表 测 试              ║" << endl;
+    cout << "║    链 表 综 合 测 试            ║" << endl;
     cout << "╚══════════════════════════════════╝" << endl;
+
+    // ==================== Part 1: 单向链表 ====================
+    cout << "\n===== Part 1: 单向链表 =====" << endl;
+
+    SinglyLinkedList sl;
+    cout << "\n头插 1,2,3 (逆序): ";
+    sl.insertHead(1);
+    sl.insertHead(2);
+    sl.insertHead(3);
+    sl.display();  // 3 2 1
+    cout << "节点数=" << sl.count() << " (expect 3)" << endl;
+
+    cout << "尾插 4,5: ";
+    sl.insertTail(4);
+    sl.insertTail(5);
+    sl.display();  // 3 2 1 4 5
+
+    cout << "search(1)=" << sl.search(1) << " (expect 1)" << endl;
+    cout << "search(9)=" << sl.search(9) << " (expect 0)" << endl;
+
+    cout << "反转: ";
+    sl.reverse();
+    sl.display();  // 5 4 1 2 3
+
+    cout << "删除4: ";
+    sl.remove(4);
+    sl.display();  // 5 1 2 3
+
+    cout << "删除头5: ";
+    sl.remove(5);
+    sl.display();  // 1 2 3
+
+    // ==================== Part 2: 双向链表 ====================
+    cout << "\n===== Part 2: 双向链表 =====" << endl;
 
     Linkedlist ll;
 
-    // 升序插入
-    cout << "\n┌─ 升序插入 5,2,8,1,3 ──────────┐" << endl;
+    cout << "\n升序插入 5,2,8,1,3: ";
     ll.AscendingInsert(5);
     ll.AscendingInsert(2);
     ll.AscendingInsert(8);
     ll.AscendingInsert(1);
     ll.AscendingInsert(3);
-    ll.Display();  // expect: 1 2 3 5 8
+    ll.Display();  // 1 2 3 5 8
     cout << "节点数=" << ll.Count() << " (expect 5)" << endl;
 
-    // 查找
-    cout << "\n┌─ 查找测试 ────────────────────┐" << endl;
-    cout << "Search(3)=" << ll.Search(3) << " (expect 1)" << endl;
-    cout << "Search(9)=" << ll.Search(9) << " (expect 0)" << endl;
+    cout << "search(3)=" << ll.Search(3) << " (expect 1)" << endl;
+    cout << "search(9)=" << ll.Search(9) << " (expect 0)" << endl;
 
-    // 删除
-    cout << "\n┌─ 删除测试 ────────────────────┐" << endl;
-    ll.Delete(1);  // 删头
-    cout << "删除1后: "; ll.Display();
-    ll.Delete(8);  // 删尾
-    cout << "删除8后: "; ll.Display();
-    ll.Delete(3);  // 删中间
-    cout << "删除3后: "; ll.Display();
+    cout << "删除1(头): "; ll.Delete(1); ll.Display();
+    cout << "删除8(尾): "; ll.Delete(8); ll.Display();
+    cout << "删除3(中): "; ll.Delete(3); ll.Display();
     cout << "节点数=" << ll.Count() << " (expect 2)" << endl;
 
-    // 降序插入
-    cout << "\n┌─ 降序插入 10,6 ───────────────┐" << endl;
+    cout << "降序插入10,6: ";
     ll.DescendingInsert(10);
     ll.DescendingInsert(6);
-    ll.Display();  // expect: 10 6 5 2
+    ll.Display();  // 10 6 5 2
 
     cout << "\n所有测试完成！" << endl;
     return 0;
