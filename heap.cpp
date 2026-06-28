@@ -295,12 +295,22 @@ private:
 
         // 回溯：检查并维护左倾性质
         // 如果左子树的 npl < 右子树的 npl → 交换左右
-        int lnpl = n1->left ? n1->left->npl : -1;
-        int rnpl = n1->right ? n1->right->npl : -1;
+        int lnpl, rnpl;
+        if (n1->left)
+            lnpl = n1->left->npl;
+        else
+            lnpl = -1;
+        if (n1->right)
+            rnpl = n1->right->npl;
+        else
+            rnpl = -1;
         if (lnpl < rnpl) swap(n1->left, n1->right);
 
         // 更新 npl：总是由较短的右子树决定
-        n1->npl = (n1->right ? n1->right->npl : -1) + 1;
+        if (n1->right)
+            n1->npl = n1->right->npl + 1;
+        else
+            n1->npl = 0;
         return n1;
     }
 
