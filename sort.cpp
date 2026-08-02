@@ -39,6 +39,11 @@
 #include<queue>
 using namespace std;
 
+// 【阅读地图】
+//   不要按文件顺序背诵 20 多种排序。建议按“局部有序、分治、堆、键域、外部排序”分组比较。
+//   阅读每个算法时都记录四件事：循环不变量、稳定性、额外空间、触发最坏情况的输入。
+//   稳定性只在相等键的相对次序上定义；快速、堆和通常的选择排序不稳定。
+
 void insertion_sort(vector<int>& arr)
 {
     int n = arr.size();
@@ -865,9 +870,9 @@ void merge(vector<int>& arr, int left, int mid, int right)
     }
 
     // 把合并好的 temp 拷回原数组
-    for (int t = 0; t < temp.size(); t++)
+    for (size_t t = 0; t < temp.size(); t++)
     {
-        arr[left + t] = temp[t];
+        arr[left + static_cast<int>(t)] = temp[t];
     }
 }
 
@@ -1564,9 +1569,9 @@ void shellSort_original(vector<int>& arr)
 //
 //   完全二叉树:
 //         4(0)
-//        /    \
+//        /    ╲
 //    10(1)    3(2)
-//     /  \
+//     /  ╲
 //  5(3) 1(4)
 //
 //   最后一个非叶节点索引 = n/2 - 1 = 5/2 - 1 = 1（即 arr[1]=10）

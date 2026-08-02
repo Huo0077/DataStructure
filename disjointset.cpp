@@ -49,6 +49,11 @@
 #include<vector>
 using namespace std;
 
+// 【阅读地图】
+//   先看 parent 数组如何表示森林，再看 Find 的路径压缩和 Union 的按大小合并。
+//   根节点的 parent 指向自身；同一集合中任意元素的 Find 结果必须相同。
+//   路径压缩改变父指针但不改变集合划分，按大小合并限制树高增长，两者共同带来均摊效率。
+
 class disjointset
 {
 private:

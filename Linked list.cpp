@@ -11,6 +11,11 @@
 #include<iostream>
 using namespace std;
 
+// 【阅读地图】
+//   先读 SinglyLinkedList 的 insertHead / remove / reverse，再读双向链表。
+//   核心不变量：head 为 nullptr，或指向第一个节点；从 head 沿 next 能恰好访问每个节点一次。
+//   每次改链都遵守“先保存仍要访问的指针，再重接链接，最后释放节点”的顺序。
+
 // ============================================================
 //   Part 1: 单向链表（Singly Linked List）
 // ============================================================

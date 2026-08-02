@@ -1,10 +1,11 @@
 // ============================================================
-//       B+ 树（B+ Tree）—— 数据库索引的王者
+//       B+ 树（B+ Tree）—— 面向页式存储的有序索引
 // ============================================================
 //
 // 【什么是 B+ 树？】
-//   B+ 树是 B 树的变体，由 Douglas Comer 命名。它是现代数据库
-//   （MySQL InnoDB、PostgreSQL、Oracle、SQLite）默认索引结构的基石。
+//   B+ 树是 B 树家族的重要变体：内部节点负责路由，实际记录放在叶节点，
+//   且叶节点通过链表连接。它特别适合磁盘或页式存储中的范围查询。
+//   不同数据库的具体索引实现各不相同；本文件聚焦可观察的 B+ 树核心不变量。
 //
 // 【B+ 树与 B 树的关键区别】
 //
@@ -52,7 +53,7 @@
 //   MySQL InnoDB 索引结构简化示意：
 //
 //     内部节点（只存 key）:               [10]        [30]
-//                                       /     \      /   \
+//                                       /     \      /   ╲
 //     内部节点:                    [1,5]    [15,20] [35,40] [50,60]
 //                                / |  \    /  |  \   ...
 //     叶节点（存数据+链表）:    [1,v][5,v] [15,v][20,v] ...
@@ -87,11 +88,11 @@
 //   这个 key 仍然保留在右叶节点中（不像 B 树那样移走）。
 //   这就是为什么 B+ 树的内部节点 key 是"副本"而非"原件"。
 //
-// 【B+ 树的度（degree）vs 阶（order）】
-//   在 B+ 树中，通常用"度 d"来描述：
-//     - 每个内部节点（除根）至少 d 个 key，最多 2d 个 key
-//     - 每个叶节点至少 d 个 key，最多 2d 个 key
-//   度 d 与阶 m 的关系：m = 2d + 1
+// 【容量约定】
+//   教材对 "阶"、"度" 与最小占用率的记法并不完全统一。本实现直接使用：
+//     - maxLeafKeys / maxInternalKeys：节点可容纳的 key 上限
+//     - minLeafKeys / minInternalKeys：非根节点的最小 key 数
+//   这样可以把代码中的分裂、借位和合并条件与容量约束一一对应。
 //
 // ============================================================
 
@@ -100,6 +101,11 @@
 #include<queue>
 #include<algorithm>
 using namespace std;
+
+// 【图示约定与阅读地图】
+//   内部节点只保存路由键，叶节点保存实际 key；父节点中的路由键对应右侧子树的下界。
+//   叶节点 next / prev 链必须与树结构同步维护，否则单点查找可能正确而范围查询会出错。
+//   阅读插入时先看叶分裂，再看内部节点分裂；阅读删除时按“借位 -> 合并 -> 根缩短”追踪。
 
 // ==================== B+ 树叶节点 ====================
 
@@ -290,10 +296,10 @@ private:
     //      然后递归
     //   3. 回溯时检查当前节点是否需要分裂
     //
-    // 返回值：如果当前节点分裂了，返回新节点（右半），否则返回 nullptr
+    // 分裂通过 parent 和 root 的修改向上传播；调用者无需接收返回节点。
     // ----------------------------------------------------------
-    BPlusNode<T>* insertHelper(BPlusNode<T>* node, const T& key,
-                                BPlusInternalNode<T>* parent, int childIdx)
+    void insertHelper(BPlusNode<T>* node, const T& key,
+                      BPlusInternalNode<T>* parent, int childIdx)
     {
         if (node->isLeaf)
         {
@@ -311,9 +317,10 @@ private:
                     parent->children.push_back(leaf);
                     root = parent;
                 }
-                return splitLeaf(leaf, parent, childIdx);
+                splitLeaf(leaf, parent, childIdx);
+                return;
             }
-            return nullptr;
+            return;
         }
         else
         {
@@ -354,7 +361,7 @@ private:
             }
 
             // 递归到子节点
-            BPlusNode<T>* result = insertHelper(internal->children[idx], key, internal, idx);
+            insertHelper(internal->children[idx], key, internal, idx);
 
             // 回溯：检查当前内部节点是否需要分裂
             if ((int)internal->keys.size() > maxInternalKeys)
@@ -369,10 +376,11 @@ private:
                 }
                 else
                 {
-                    return splitInternal(internal, parent, childIdx);
+                    splitInternal(internal, parent, childIdx);
+                    return;
                 }
             }
-            return nullptr;
+            return;
         }
     }
 

@@ -18,7 +18,7 @@
 //   以 S = "banana$" 为例（$ 是结束符，确保没有后缀是另一个后缀的前缀）：
 //
 //                        root
-//                    /   |    \    \
+//                    /   |    \    ╲
 //                   a   ba   na   $
 //                  / \   |    |
 //                 $  na na$  na$
@@ -36,7 +36,7 @@
 //   以上面 S = "banana$" 的后缀 Trie 压缩后：
 //
 //                        root
-//                    /    |     \    \
+//                    /    |     \    ╲
 //                   a    ba   na   $
 //                  / \    |     |
 //               $  na   na$   na$
@@ -141,6 +141,11 @@
 #include<algorithm>
 #include<climits>
 using namespace std;
+
+// 【图示约定与阅读地图】
+//   先读 O(n^2) 的 Suffix Trie，再读压缩边与 Ukkonen 状态；两部分解决的是同一后缀集合的不同表示。
+//   后缀树边只保存原串的 [start, end] 区间，避免复制子串；根到叶的路径对应一个后缀。
+//   Ukkonen 的活动点由 activeNode、activeEdge、activeLength 组成，suffix link 用于避免从根重复开始。
 
 // ============================================================
 //   Part 1: 后缀字典树（Suffix Trie）—— 教学版
@@ -339,11 +344,9 @@ private:
     // 仍然匹配，所以活动长度 +1。
     // 如果活动长度等于了当前边的长度，则"穿过"该边，活动点变为子节点。
     //
-    // 参数 pos: 当前正在处理的字符在原串中的位置
     // ----------------------------------------------------------
-    bool walkDown(int currNodeID, int pos)
+    bool walkDown(int currNodeID)
     {
-        SuffixTreeNode* currNode = nodes[currNodeID];
         int len = edgeLen(currNodeID);
 
         if (activeLength >= len)
@@ -412,7 +415,7 @@ private:
                 SuffixTreeNode* nextNode = nodes[nextNodeID];
 
                 // 检查是否需要 walked down
-                if (walkDown(nextNodeID, pos))
+                if (walkDown(nextNodeID))
                 {
                     // 穿过了当前边，重新循环（不减少 remainder）
                     continue;
@@ -848,24 +851,7 @@ public:
         string best = "";
         int bestLen = 0;
 
-        for (const auto& node : st.nodes)
-        {
-            if (node->children.empty()) continue;   // 跳过叶节点
-            if (node->id == st.rootID) continue;     // 跳过根节点
-
-            // 收集该子树中的叶节点
-            vector<int> positions;
-            st.collectLeafPositionsHelper(node->id,
-                                          st.getPathLabelLen(node->id),
-                                          (int)combined.length() - 2, positions);
-            // ↑ 这里的 pathLen 不精确，我们换一种方式
-
-            // 检查是否有来自两个串的后缀
-            bool hasS1 = false, hasS2 = false;
-        }
-
-        // 为了简化，这里用一个更直观的方法：
-        // 枚举所有内部节点
+        // 枚举内部节点，检查其子树是否同时包含两个原串的后缀。
         int n1 = (int)s1.length();
         for (int i = 0; i < (int)st.nodes.size(); i++)
         {
