@@ -19,7 +19,7 @@
 <a id="chapter-06"></a>
 # 第 6 章　二叉搜索树
 
-> 难度：★★☆☆☆ | 代码：[binary_tree.cpp](../binary_tree.cpp) BST 部分
+> 难度：★★☆☆☆ | 代码：[binary_tree.cpp](https://github.com/Huo0077/DataStructure/blob/main/binary_tree.cpp) BST 部分
 
 **前置知识**：[第 5 章](05-binary-tree-basics.md) 二叉树遍历（特别关心中序遍历 = 升序输出这一性质），[第 1 章](01-complexity-adt.md) 递归分析（BST 操作均为 O(h)）。
 

@@ -18,7 +18,7 @@
 <a id="chapter-05"></a>
 # 第 5 章　二叉树基础与遍历
 
-> 难度：★★☆☆☆ | 代码：[binary_tree.cpp](../binary_tree.cpp) 遍历部分
+> 难度：★★☆☆☆ | 代码：[binary_tree.cpp](https://github.com/Huo0077/DataStructure/blob/main/binary_tree.cpp) 遍历部分
 
 **前置知识**：[第 2 章](02-linear-list.md) 链表（链式二叉树的左/右指针是链表 next 指针的自然推广——从"一个后续"变"两个后续"）。
 

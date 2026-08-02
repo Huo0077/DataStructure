@@ -22,7 +22,7 @@
 <a id="chapter-02"></a>
 # 第 2 章　线性表
 
-> 难度：★☆☆☆☆ | 代码：[Linked list.cpp](../Linked%20list.cpp)
+> 难度：★☆☆☆☆ | 代码：[Linked list.cpp](https://github.com/Huo0077/DataStructure/blob/main/Linked%20list.cpp)
 
 **前置知识**：[第 1 章](01-complexity-adt.md) 复杂度分析（理解 O(1) vs O(n) 操作的含义，为选择顺序表还是链表提供判断依据）。
 

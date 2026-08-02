@@ -18,7 +18,7 @@
 <a id="chapter-15"></a>
 # 第 15 章　后缀树与后缀数组
 
-> 难度：★★★★★ | 代码：[suffixtree.cpp](../suffixtree.cpp) / [suffixarray.cpp](../suffixarray.cpp)
+> 难度：★★★★★ | 代码：[suffixtree.cpp](https://github.com/Huo0077/DataStructure/blob/main/suffixtree.cpp) / [suffixarray.cpp](https://github.com/Huo0077/DataStructure/blob/main/suffixarray.cpp)
 
 **前置知识**：[第 4 章 KMP](04-string-matching-kmp.md)（对"预处理使快速查询成为可能"有体会），[第 5 章](05-binary-tree-basics.md) 二叉树遍历（后缀树是压缩 Trie），[第 14 章](14-sorting-algorithms.md) 排序（后缀数组构建需要排序）。
 

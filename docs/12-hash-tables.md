@@ -20,7 +20,7 @@
 <a id="chapter-12"></a>
 # 第 12 章　哈希表
 
-> 难度：★★☆☆☆ | 代码：[hashing.cpp](../hashing.cpp)
+> 难度：★★☆☆☆ | 代码：[hashing.cpp](https://github.com/Huo0077/DataStructure/blob/main/hashing.cpp)
 
 **前置知识**：[第 1 章](01-complexity-adt.md) 均摊分析（重哈希的均摊 O(1)），[第 2 章](02-linear-list.md) 链表（分离链接法用链表）。
 
@@ -82,7 +82,7 @@
 <a id="c12-12-2"></a>
 ## 12.2 完美哈希 (FKS)
 
-> 代码 [hashing.cpp](../hashing.cpp) 中的 `PerfectHash` 类实现了 FKS 双层完美哈希。
+> 代码 [hashing.cpp](https://github.com/Huo0077/DataStructure/blob/main/hashing.cpp) 中的 `PerfectHash` 类实现了 FKS 双层完美哈希。
 
 **思想**：第一层哈希分桶，第二层给每个桶一个无冲突的哈希表（表大小 = 桶大小的平方）。如果任何第二层桶还有冲突，换一个新的哈希函数重建。期望总空间 O(n)，查询严格 O(1)。
 

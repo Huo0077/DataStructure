@@ -24,7 +24,7 @@
 <a id="c08-8-1"></a>
 ## 8.1 AVL 树
 
-> 难度：★★★★☆ | 代码：[avl_tree.cpp](../avl_tree.cpp)
+> 难度：★★★★☆ | 代码：[avl_tree.cpp](https://github.com/Huo0077/DataStructure/blob/main/avl_tree.cpp)
 
 **学习目标**：理解平衡因子的概念，掌握四种旋转的触发条件和执行方式。
 
@@ -82,7 +82,7 @@
 <a id="c08-8-2"></a>
 ## 8.2 红黑树
 
-> 难度：★★★★★ | 代码：[redblacktree.cpp](../redblacktree.cpp)
+> 难度：★★★★★ | 代码：[redblacktree.cpp](https://github.com/Huo0077/DataStructure/blob/main/redblacktree.cpp)
 
 **学习目标**：理解五条性质如何保证平衡，掌握插入修复的三种情况，理解工程中为何选择红黑树。
 
@@ -152,7 +152,7 @@ P(红) U(黑)  N(红) U(黑)  P(红)  G(红)
 <a id="c08-8-3"></a>
 ## 8.3 伸展树
 
-> 难度：★★★★☆ | 代码：[splaytree.cpp](../splaytree.cpp)
+> 难度：★★★★☆ | 代码：[splaytree.cpp](https://github.com/Huo0077/DataStructure/blob/main/splaytree.cpp)
 
 **学习目标**：理解"访问即平衡"的自适应思想，掌握 Zig/Zig-Zig/Zig-Zag 三种旋转。
 

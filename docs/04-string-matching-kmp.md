@@ -23,7 +23,7 @@
 <a id="chapter-04"></a>
 # 第 4 章　字符串匹配（KMP）
 
-> 难度：★★★☆☆ | 代码：[string_match.cpp](../string_match.cpp)
+> 难度：★★★☆☆ | 代码：[string_match.cpp](https://github.com/Huo0077/DataStructure/blob/main/string_match.cpp)
 
 **前置知识**：[第 1 章](01-complexity-adt.md) 均摊分析（while 循环中 j 只减不增，减小次数 ≤ 增加次数，故均摊 O(1)），[第 2 章](02-linear-list.md) 线性表基本概念。
 

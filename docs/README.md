@@ -2,7 +2,7 @@
 
 > 本目录将 65 页 PDF 教材整理为可独立阅读、可稳定链接的 Markdown 页面。每章保留原有的理论、示例、小结、思考题，并直接链接到对应的 C++17 实现。
 
-[返回项目主页](../README.md) | [单页 Markdown 版](../数据结构教学文档.md) | [PDF 打印版](../数据结构教学文档.pdf)
+[返回项目主页](https://github.com/Huo0077/DataStructure/blob/main/README.md) | [单页 Markdown 版](https://github.com/Huo0077/DataStructure/blob/main/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E6%95%99%E5%AD%A6%E6%96%87%E6%A1%A3.md) | [PDF 打印版](https://github.com/Huo0077/DataStructure/blob/main/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E6%95%99%E5%AD%A6%E6%96%87%E6%A1%A3.pdf)
 
 ## 如何使用
 
@@ -17,56 +17,56 @@
 
 | 章 | 学习主题 | 对应源码 |
 | :---: | --- | --- |
-| 01 | [复杂度分析与 ADT](01-complexity-adt.md) | [`complexity_adt.cpp`](../complexity_adt.cpp) |
+| 01 | [复杂度分析与 ADT](01-complexity-adt.md) | [`complexity_adt.cpp`](https://github.com/Huo0077/DataStructure/blob/main/complexity_adt.cpp) |
 
 ### 第二部分：线性结构
 
 | 章 | 学习主题 | 对应源码 |
 | :---: | --- | --- |
-| 02 | [线性表](02-linear-list.md) | [`Linked list.cpp`](../Linked%20list.cpp) |
-| 03 | [栈与队列](03-stacks-and-queues.md) | [`linear_structures.cpp`](../linear_structures.cpp) |
+| 02 | [线性表](02-linear-list.md) | [`Linked list.cpp`](https://github.com/Huo0077/DataStructure/blob/main/Linked%20list.cpp) |
+| 03 | [栈与队列](03-stacks-and-queues.md) | [`linear_structures.cpp`](https://github.com/Huo0077/DataStructure/blob/main/linear_structures.cpp) |
 
 ### 第三部分：串
 
 | 章 | 学习主题 | 对应源码 |
 | :---: | --- | --- |
-| 04 | [字符串匹配（KMP）](04-string-matching-kmp.md) | [`string_match.cpp`](../string_match.cpp) |
+| 04 | [字符串匹配（KMP）](04-string-matching-kmp.md) | [`string_match.cpp`](https://github.com/Huo0077/DataStructure/blob/main/string_match.cpp) |
 
 ### 第四部分：树与二叉树
 
 | 章 | 学习主题 | 对应源码 |
 | :---: | --- | --- |
-| 05 | [二叉树基础与遍历](05-binary-tree-basics.md) | [`binary_tree.cpp`](../binary_tree.cpp) |
-| 06 | [二叉搜索树](06-binary-search-tree.md) | [`binary_tree.cpp`](../binary_tree.cpp) |
-| 07 | [堆与优先队列](07-heap-and-priority-queue.md) | [`heap.cpp`](../heap.cpp) |
-| 08 | [平衡二叉树](08-balanced-binary-search-trees.md) | [`avl_tree.cpp`](../avl_tree.cpp) / [`redblacktree.cpp`](../redblacktree.cpp) / [`splaytree.cpp`](../splaytree.cpp) |
-| 09 | [多路搜索树](09-multiway-search-trees.md) | [`multiwaytree.cpp`](../multiwaytree.cpp) / [`bplustree.cpp`](../bplustree.cpp) |
-| 10 | [多维搜索树（KD 树）](10-kd-tree.md) | [`kdtree.cpp`](../kdtree.cpp) |
+| 05 | [二叉树基础与遍历](05-binary-tree-basics.md) | [`binary_tree.cpp`](https://github.com/Huo0077/DataStructure/blob/main/binary_tree.cpp) |
+| 06 | [二叉搜索树](06-binary-search-tree.md) | [`binary_tree.cpp`](https://github.com/Huo0077/DataStructure/blob/main/binary_tree.cpp) |
+| 07 | [堆与优先队列](07-heap-and-priority-queue.md) | [`heap.cpp`](https://github.com/Huo0077/DataStructure/blob/main/heap.cpp) |
+| 08 | [平衡二叉树](08-balanced-binary-search-trees.md) | [`avl_tree.cpp`](https://github.com/Huo0077/DataStructure/blob/main/avl_tree.cpp) / [`redblacktree.cpp`](https://github.com/Huo0077/DataStructure/blob/main/redblacktree.cpp) / [`splaytree.cpp`](https://github.com/Huo0077/DataStructure/blob/main/splaytree.cpp) |
+| 09 | [多路搜索树](09-multiway-search-trees.md) | [`multiwaytree.cpp`](https://github.com/Huo0077/DataStructure/blob/main/multiwaytree.cpp) / [`bplustree.cpp`](https://github.com/Huo0077/DataStructure/blob/main/bplustree.cpp) |
+| 10 | [多维搜索树（KD 树）](10-kd-tree.md) | [`kdtree.cpp`](https://github.com/Huo0077/DataStructure/blob/main/kdtree.cpp) |
 
 ### 第五部分：图
 
 | 章 | 学习主题 | 对应源码 |
 | :---: | --- | --- |
-| 11 | [图论算法](11-graph-algorithms.md) | [`graph.cpp`](../graph.cpp) |
+| 11 | [图论算法](11-graph-algorithms.md) | [`graph.cpp`](https://github.com/Huo0077/DataStructure/blob/main/graph.cpp) |
 
 ### 第六部分：查找
 
 | 章 | 学习主题 | 对应源码 |
 | :---: | --- | --- |
-| 12 | [哈希表](12-hash-tables.md) | [`hashing.cpp`](../hashing.cpp) |
-| 13 | [并查集](13-disjoint-set-union.md) | [`disjointset.cpp`](../disjointset.cpp) |
+| 12 | [哈希表](12-hash-tables.md) | [`hashing.cpp`](https://github.com/Huo0077/DataStructure/blob/main/hashing.cpp) |
+| 13 | [并查集](13-disjoint-set-union.md) | [`disjointset.cpp`](https://github.com/Huo0077/DataStructure/blob/main/disjointset.cpp) |
 
 ### 第七部分：排序
 
 | 章 | 学习主题 | 对应源码 |
 | :---: | --- | --- |
-| 14 | [排序算法](14-sorting-algorithms.md) | [`sort.cpp`](../sort.cpp) |
+| 14 | [排序算法](14-sorting-algorithms.md) | [`sort.cpp`](https://github.com/Huo0077/DataStructure/blob/main/sort.cpp) |
 
 ### 第八部分：高级字符串
 
 | 章 | 学习主题 | 对应源码 |
 | :---: | --- | --- |
-| 15 | [后缀树与后缀数组](15-suffix-tree-and-array.md) | [`suffixtree.cpp`](../suffixtree.cpp) / [`suffixarray.cpp`](../suffixarray.cpp) |
+| 15 | [后缀树与后缀数组](15-suffix-tree-and-array.md) | [`suffixtree.cpp`](https://github.com/Huo0077/DataStructure/blob/main/suffixtree.cpp) / [`suffixarray.cpp`](https://github.com/Huo0077/DataStructure/blob/main/suffixarray.cpp) |
 
 ## 附录
 

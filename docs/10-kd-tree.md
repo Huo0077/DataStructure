@@ -14,7 +14,7 @@
 <a id="chapter-10"></a>
 # 第 10 章　多维搜索树（KD 树）
 
-> 难度：★★★★☆ | 代码：[kdtree.cpp](../kdtree.cpp)
+> 难度：★★★★☆ | 代码：[kdtree.cpp](https://github.com/Huo0077/DataStructure/blob/main/kdtree.cpp)
 
 **前置知识**：[第 5 章](05-binary-tree-basics.md) 二叉树遍历，[第 6 章 BST](06-binary-search-tree.md)（KD 树是 BST 到 k 维空间的推广），[第 1 章](01-complexity-adt.md) 均摊分析（最近邻搜索的均摊 O(log n)）。
 

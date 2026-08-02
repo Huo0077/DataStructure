@@ -23,7 +23,7 @@
 <a id="c09-9-1"></a>
 ## 9.1 B 树
 
-> 难度：★★★★☆ | 代码：[multiwaytree.cpp](../multiwaytree.cpp)
+> 难度：★★★★☆ | 代码：[multiwaytree.cpp](https://github.com/Huo0077/DataStructure/blob/main/multiwaytree.cpp)
 
 **学习目标**：理解"减少磁盘 I/O"的设计动机，掌握 B 树的分裂与合并操作。
 
@@ -69,7 +69,7 @@
 <a id="c09-9-2"></a>
 ## 9.2 B+ 树
 
-> 难度：★★★★★ | 代码：[bplustree.cpp](../bplustree.cpp)
+> 难度：★★★★★ | 代码：[bplustree.cpp](https://github.com/Huo0077/DataStructure/blob/main/bplustree.cpp)
 
 **学习目标**：理解 B+ 树与 B 树的本质区别，掌握数据库选 B+ 树的四大理由。
 
@@ -112,7 +112,7 @@ B+ 树叶分裂示例:
 <a id="c09-9-3"></a>
 ## 9.3 2-3 树与红黑树的等价关系
 
-> （来自 [multiwaytree.cpp](../multiwaytree.cpp) 代码注释，第 47-64 行）
+> （来自 [multiwaytree.cpp](https://github.com/Huo0077/DataStructure/blob/main/multiwaytree.cpp) 代码注释，第 47-64 行）
 
 一个 4-node（3 个 key，4 个子节点）可以编码为一棵小的红黑树：
 

@@ -18,7 +18,7 @@
 <a id="chapter-03"></a>
 # 第 3 章　栈与队列
 
-> 难度：★☆☆☆☆ | 代码：[linear_structures.cpp](../linear_structures.cpp)
+> 难度：★☆☆☆☆ | 代码：[linear_structures.cpp](https://github.com/Huo0077/DataStructure/blob/main/linear_structures.cpp)
 
 **前置知识**：[第 1 章](01-complexity-adt.md) 均摊分析（双栈模拟队列的均摊 O(1) 分析），[第 2 章](02-linear-list.md) 链表插入/删除操作。
 

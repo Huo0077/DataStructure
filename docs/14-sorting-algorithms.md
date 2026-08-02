@@ -23,7 +23,7 @@
 <a id="chapter-14"></a>
 # 第 14 章　排序算法
 
-> 难度：★★☆☆☆ | 代码：[sort.cpp](../sort.cpp)
+> 难度：★★☆☆☆ | 代码：[sort.cpp](https://github.com/Huo0077/DataStructure/blob/main/sort.cpp)
 
 **前置知识**：[第 1 章](01-complexity-adt.md) 复杂度分析（比较排序下界 Ω(n log n)），[第 7 章](07-heap-and-priority-queue.md) 堆（堆排序基于堆结构），[第 5 章](05-binary-tree-basics.md) 二叉树遍历（归并排序的分治递归 = 后序遍历的变体）。
 
@@ -114,7 +114,7 @@ pivot 6 在正确位置(index=5) ✓
 <a id="c14-14-6"></a>
 ## 14.6 TimSort
 
-> [sort.cpp](../sort.cpp) 中实现了完整的 TimSort。
+> [sort.cpp](https://github.com/Huo0077/DataStructure/blob/main/sort.cpp) 中实现了完整的 TimSort。
 
 Python 和 Java 的内置排序均使用 TimSort——一种**自适应于"部分有序"数据的混合排序**，融合了归并排序的分治和插入排序的小数据优势。核心思想：识别并利用输入中的有序片段（run），减少不必要的比较和移动。
 

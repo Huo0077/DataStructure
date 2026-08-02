@@ -20,7 +20,7 @@
 <a id="chapter-01"></a>
 # 第 1 章　复杂度分析与 ADT
 
-> 难度：★☆☆☆☆ | 代码：[complexity_adt.cpp](../complexity_adt.cpp)
+> 难度：★☆☆☆☆ | 代码：[complexity_adt.cpp](https://github.com/Huo0077/DataStructure/blob/main/complexity_adt.cpp)
 
 **前置知识**：（无前置依赖，本章为全书理论基础。）
 

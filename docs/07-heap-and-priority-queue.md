@@ -19,7 +19,7 @@
 <a id="chapter-07"></a>
 # 第 7 章　堆与优先队列
 
-> 难度：★★☆☆☆ | 代码：[heap.cpp](../heap.cpp)
+> 难度：★★☆☆☆ | 代码：[heap.cpp](https://github.com/Huo0077/DataStructure/blob/main/heap.cpp)
 
 **前置知识**：[第 5 章](05-binary-tree-basics.md) 完全二叉树的数组存储方式，[第 6 章](06-binary-search-tree.md) BST 的树形结构和退化问题（堆通过完全二叉树的约束彻底避免了高退化）。
 
@@ -128,7 +128,7 @@ pop() 从 [1, 3, 5, 8, 7]:
 <a id="c07-7-6"></a>
 ## 7.6 左式堆 — 可合并的优先队列
 
-> 难度：★★★☆☆ | 代码：[heap.cpp](../heap.cpp) Part 2
+> 难度：★★★☆☆ | 代码：[heap.cpp](https://github.com/Huo0077/DataStructure/blob/main/heap.cpp) Part 2
 
 普通二叉堆合并需要 O(n)。左式堆通过维护**左倾性质**（npl(左) ≥ npl(右)），支持 O(log n) 合并。
 

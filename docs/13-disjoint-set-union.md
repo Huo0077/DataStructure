@@ -18,7 +18,7 @@
 <a id="chapter-13"></a>
 # 第 13 章　并查集
 
-> 难度：★★☆☆☆ | 代码：[disjointset.cpp](../disjointset.cpp)
+> 难度：★★☆☆☆ | 代码：[disjointset.cpp](https://github.com/Huo0077/DataStructure/blob/main/disjointset.cpp)
 
 **前置知识**：[第 1 章](01-complexity-adt.md) 均摊分析（反阿克曼函数 α(n) 的均摊含义），[第 2 章](02-linear-list.md) 链表 / [第 5 章](05-binary-tree-basics.md) 树（parent 数组模拟树结构）。
 

@@ -21,7 +21,7 @@
 <a id="chapter-11"></a>
 # 第 11 章　图论算法
 
-> 难度：★★★★★ | 代码：[graph.cpp](../graph.cpp)
+> 难度：★★★★★ | 代码：[graph.cpp](https://github.com/Huo0077/DataStructure/blob/main/graph.cpp)
 
 **前置知识**：[第 3 章](03-stacks-and-queues.md) 队列（BFS）/ 栈（DFS），[第 7 章](07-heap-and-priority-queue.md) 堆/优先队列（Dijkstra 用堆优化），[第 13 章](13-disjoint-set-union.md) 并查集（Kruskal 用并查集判环）。
 
