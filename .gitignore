@@ -1,3 +1,9 @@
+# Build directories
+build/
+bin/
+cmake-build-*/
+.cache/
+
 # Compiled output
 *.exe
 *.out
@@ -9,3 +15,4 @@
 .vscode/
 *.user
 *.suo
+
